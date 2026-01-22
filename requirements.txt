@@ -1,0 +1,36 @@
+# MediAnalyze Pro - Project Dependencies
+
+# Core Python
+python>=3.8
+
+# GUI Framework (Choose one - PyQt5 recommended)
+PyQt5>=5.15.9
+# Alternative: PyQt6>=6.4.0
+# Alternative: tkinter (built-in with Python)
+
+# Data Processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Image Processing
+opencv-python>=4.7.0
+Pillow>=10.0.0
+
+# Database
+# SQLite is built-in with Python
+# For PostgreSQL: psycopg2-binary>=2.9.0
+# For MySQL: mysql-connector-python>=8.0.0
+SQLAlchemy>=2.0.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Testing (Optional but recommended)
+pytest>=7.3.0
+pytest-cov>=4.1.0
+
+# Development Tools (Optional)
+black>=23.3.0
+flake8>=6.0.0
