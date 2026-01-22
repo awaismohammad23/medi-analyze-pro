@@ -1,7 +1,5 @@
 # MediAnalyze Pro - Project Dependencies
-
-# Core Python
-python>=3.8
+# Requires Python 3.8 or higher
 
 # GUI Framework (Choose one - PyQt5 recommended)
 PyQt5>=5.15.9
