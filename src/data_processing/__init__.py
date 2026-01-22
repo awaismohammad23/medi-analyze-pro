@@ -8,6 +8,9 @@ from .csv_loader import CSVLoader
 from .importer import DataImporter
 from .retriever import DataRetriever
 from .exporter import DataExporter
+from .filters import DataFilter
+from .correlation import CorrelationAnalyzer
+from .time_series import TimeSeriesAnalyzer
 
 __all__ = [
     'DataValidator',
@@ -15,5 +18,8 @@ __all__ = [
     'CSVLoader',
     'DataImporter',
     'DataRetriever',
-    'DataExporter'
+    'DataExporter',
+    'DataFilter',
+    'CorrelationAnalyzer',
+    'TimeSeriesAnalyzer'
 ]
