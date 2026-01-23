@@ -40,10 +40,16 @@ ENV/
 *.sqlite3
 
 # Data files (uncomment if you don't want to track data)
-# data/raw/*
-# data/processed/*
-# data/images/*
+data/raw/*
+data/processed/*
+data/images/**
+!data/images/.gitkeep
 
+# Large datasets (exclude from git)
+datasets/**
+!datasets/
+!datasets/.gitkeep
+!datasets/cardio_train.csv
 # Logs
 *.log
 
