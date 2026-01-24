@@ -66,8 +66,34 @@ MediAnalyze Pro is a desktop application built with PyQt5 that provides healthca
 ### Prerequisites
 - Python 3.8 or higher
 - pip package manager
+- make (optional, for Makefile commands)
 
-### Setup
+### Quick Start (Using Makefile - Recommended)
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd "MediAnalyze Pro"
+   ```
+
+2. **Run full setup** (creates venv and installs dependencies):
+   ```bash
+   make setup
+   ```
+
+3. **Activate virtual environment**:
+   ```bash
+   source venv/bin/activate  # On macOS/Linux
+   # OR
+   venv\Scripts\activate  # On Windows
+   ```
+
+4. **Run the application**:
+   ```bash
+   make run
+   ```
+
+### Manual Setup (Alternative)
 
 1. **Clone the repository**:
    ```bash
@@ -86,17 +112,40 @@ MediAnalyze Pro is a desktop application built with PyQt5 that provides healthca
 3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
+   # OR
+   make install  # (if venv is active)
    ```
 
 ## Running the Application
 
-### Launch GUI Application
+### Using Makefile (Recommended)
+
 ```bash
-python run_gui.py
+# Launch GUI application
+make run
+
+# Run all tests
+make test
+
+# Run tests with coverage report
+make test-cov
+
+# Initialize database
+make init-db
+
+# Clean temporary files
+make clean
+
+# View all available commands
+make help
 ```
 
-### Run Tests
+### Manual Commands
+
 ```bash
+# Launch GUI application
+python run_gui.py
+
 # Run all tests
 pytest
 
@@ -105,10 +154,8 @@ pytest tests/test_database.py
 
 # Run with coverage
 pytest --cov=src tests/
-```
 
-### Initialize Database
-```bash
+# Initialize database
 python -m src.database.init_db
 ```
 
