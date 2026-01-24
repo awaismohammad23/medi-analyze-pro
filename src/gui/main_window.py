@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from src.database import get_db_connection, init_database
 from .styles import get_stylesheet, COLORS
-from .tabs import DataManagementTab
+from .tabs import DataManagementTab, HealthAnalysisTab
 
 
 class MainWindow(QMainWindow):
@@ -135,16 +135,8 @@ class MainWindow(QMainWindow):
         tab1 = DataManagementTab()
         self.tab_widget.addTab(tab1, "Data Management")
         
-        # Tab 2: Health Data Analysis
-        tab2 = self._create_placeholder_tab(
-            "Health Data Analysis",
-            "This tab will allow you to:\n"
-            "• Apply filters to health metrics\n"
-            "• Perform correlation analysis\n"
-            "• Analyze time-series data\n"
-            "• Visualize health trends\n\n"
-            "Implementation: Phase 10"
-        )
+        # Tab 2: Health Data Analysis (Phase 10 - Real Implementation)
+        tab2 = HealthAnalysisTab()
         self.tab_widget.addTab(tab2, "Health Analysis")
         
         # Tab 3: Spectrum Analysis
