@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from src.database import get_db_connection, init_database
 from .styles import get_stylesheet, COLORS
-from .tabs import DataManagementTab, HealthAnalysisTab
+from .tabs import DataManagementTab, HealthAnalysisTab, SpectrumAnalysisTab
 
 
 class MainWindow(QMainWindow):
@@ -139,16 +139,9 @@ class MainWindow(QMainWindow):
         tab2 = HealthAnalysisTab()
         self.tab_widget.addTab(tab2, "Health Analysis")
         
-        # Tab 3: Spectrum Analysis
-        tab3 = self._create_placeholder_tab(
-            "Spectrum Analysis",
-            "This tab will allow you to:\n"
-            "• Load ECG/EEG signal files\n"
-            "• Perform FFT analysis\n"
-            "• View power spectral density\n"
-            "• Analyze frequency components\n\n"
-            "Implementation: Phase 11"
-        )
+        # Tab 3: Spectrum Analysis (Phase 11 - Real Implementation)
+        tab3 = SpectrumAnalysisTab()
+        self.tab_widget.addTab(tab3, "Spectrum Analysis")
         self.tab_widget.addTab(tab3, "Spectrum Analysis")
         
         # Tab 4: Image Processing

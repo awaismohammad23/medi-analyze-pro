@@ -4,10 +4,12 @@ Computes and stores correlation coefficients between health metrics
 """
 
 import logging
+import warnings
 from typing import Dict, List, Optional, Tuple, Union
 import pandas as pd
 import numpy as np
 from scipy.stats import pearsonr, spearmanr
+from scipy.stats import t as t_dist
 from sqlalchemy.orm import Session
 
 from ..database import get_session, crud
@@ -46,8 +48,44 @@ class CorrelationAnalyzer:
             raise ValueError("Insufficient valid data points (need at least 2)")
         
         try:
-            correlation, p_value = pearsonr(x_clean, y_clean)
-            return float(correlation), float(p_value), len(x_clean)
+            # Suppress warnings and handle SVD convergence issues
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore', category=RuntimeWarning)
+                warnings.filterwarnings('ignore', message='.*SVD.*')
+                try:
+                    correlation, p_value = pearsonr(x_clean, y_clean)
+                    # Check if result is valid (not NaN)
+                    if np.isnan(correlation) or np.isnan(p_value):
+                        raise ValueError("Correlation computation resulted in NaN values")
+                    # If we got here, correlation was computed successfully
+                    return float(correlation), float(p_value), len(x_clean)
+                except (np.linalg.LinAlgError, ValueError) as e:
+                    # If SVD fails, try alternative computation
+                    logger.warning(f"SVD convergence issue in Pearson correlation, using alternative method: {e}")
+                    # Use manual computation as fallback
+                    x_mean = np.mean(x_clean)
+                    y_mean = np.mean(y_clean)
+                    x_centered = x_clean - x_mean
+                    y_centered = y_clean - y_mean
+                    
+                    numerator = np.sum(x_centered * y_centered)
+                    x_std = np.std(x_clean, ddof=1)
+                    y_std = np.std(y_clean, ddof=1)
+                    
+                    if x_std == 0 or y_std == 0:
+                        raise ValueError("Cannot compute correlation: one or both variables have zero variance")
+                    
+                    correlation = numerator / (len(x_clean) - 1) / (x_std * y_std)
+                    correlation = np.clip(correlation, -1.0, 1.0)
+                    
+                    # Approximate p-value using t-test (for large samples)
+                    if len(x_clean) > 2:
+                        t_stat = correlation * np.sqrt((len(x_clean) - 2) / (1 - correlation**2))
+                        p_value = 2 * (1 - t_dist.cdf(abs(t_stat), len(x_clean) - 2))
+                    else:
+                        p_value = 1.0
+                    
+                    return float(correlation), float(p_value), len(x_clean)
         except Exception as e:
             logger.error(f"Error computing Pearson correlation: {e}")
             raise
@@ -77,8 +115,49 @@ class CorrelationAnalyzer:
             raise ValueError("Insufficient valid data points (need at least 2)")
         
         try:
-            correlation, p_value = spearmanr(x_clean, y_clean)
-            return float(correlation), float(p_value), len(x_clean)
+            # Suppress warnings and handle SVD convergence issues
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore', category=RuntimeWarning)
+                warnings.filterwarnings('ignore', message='.*SVD.*')
+                try:
+                    correlation, p_value = spearmanr(x_clean, y_clean)
+                    # Check if result is valid (not NaN)
+                    if np.isnan(correlation) or np.isnan(p_value):
+                        raise ValueError("Correlation computation resulted in NaN values")
+                    # If we got here, correlation was computed successfully
+                    return float(correlation), float(p_value), len(x_clean)
+                except (np.linalg.LinAlgError, ValueError) as e:
+                    # If SVD fails, use rank-based computation manually
+                    logger.warning(f"SVD convergence issue in Spearman correlation, using alternative method: {e}")
+                    # Manual Spearman computation using ranks
+                    from scipy.stats import rankdata
+                    x_ranks = rankdata(x_clean)
+                    y_ranks = rankdata(y_clean)
+                    
+                    # Compute Pearson correlation on ranks
+                    x_rank_mean = np.mean(x_ranks)
+                    y_rank_mean = np.mean(y_ranks)
+                    x_rank_centered = x_ranks - x_rank_mean
+                    y_rank_centered = y_ranks - y_rank_mean
+                    
+                    numerator = np.sum(x_rank_centered * y_rank_centered)
+                    x_rank_std = np.std(x_ranks, ddof=1)
+                    y_rank_std = np.std(y_ranks, ddof=1)
+                    
+                    if x_rank_std == 0 or y_rank_std == 0:
+                        raise ValueError("Cannot compute correlation: one or both variables have zero variance")
+                    
+                    correlation = numerator / (len(x_clean) - 1) / (x_rank_std * y_rank_std)
+                    correlation = np.clip(correlation, -1.0, 1.0)
+                    
+                    # Approximate p-value using t-test (for large samples)
+                    if len(x_clean) > 2:
+                        t_stat = correlation * np.sqrt((len(x_clean) - 2) / (1 - correlation**2))
+                        p_value = 2 * (1 - t_dist.cdf(abs(t_stat), len(x_clean) - 2))
+                    else:
+                        p_value = 1.0
+                    
+                    return float(correlation), float(p_value), len(x_clean)
         except Exception as e:
             logger.error(f"Error computing Spearman correlation: {e}")
             raise

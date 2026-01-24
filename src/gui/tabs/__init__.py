@@ -5,5 +5,6 @@ Contains individual tab implementations for each module
 
 from .data_management_tab import DataManagementTab
 from .health_analysis_tab import HealthAnalysisTab
+from .spectrum_analysis_tab import SpectrumAnalysisTab
 
-__all__ = ['DataManagementTab', 'HealthAnalysisTab']
+__all__ = ['DataManagementTab', 'HealthAnalysisTab', 'SpectrumAnalysisTab']

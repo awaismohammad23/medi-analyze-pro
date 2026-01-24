@@ -55,18 +55,35 @@ class AnalysisWorker(QThread):
                 x = self.kwargs['x']
                 y = self.kwargs['y']
                 
-                if method == 'pearson':
-                    corr, p_value, n = analyzer.compute_pearson_correlation(x, y)
-                else:
-                    corr, p_value, n = analyzer.compute_spearman_correlation(x, y)
-                
-                self.progress.emit(100, "Correlation computed!")
-                self.finished.emit({
-                    'correlation': corr,
-                    'p_value': p_value,
-                    'n': n,
-                    'method': method
-                })
+                try:
+                    if method == 'pearson':
+                        corr, p_value, n = analyzer.compute_pearson_correlation(x, y)
+                    else:
+                        corr, p_value, n = analyzer.compute_spearman_correlation(x, y)
+                    
+                    self.progress.emit(100, "Correlation computed!")
+                    self.finished.emit({
+                        'correlation': corr,
+                        'p_value': p_value,
+                        'n': n,
+                        'method': method
+                    })
+                except np.linalg.LinAlgError as e:
+                    # SVD convergence issue - try alternative computation
+                    import warnings
+                    warnings.filterwarnings('ignore')
+                    if method == 'pearson':
+                        corr, p_value, n = analyzer.compute_pearson_correlation(x, y)
+                    else:
+                        corr, p_value, n = analyzer.compute_spearman_correlation(x, y)
+                    
+                    self.progress.emit(100, "Correlation computed!")
+                    self.finished.emit({
+                        'correlation': corr,
+                        'p_value': p_value,
+                        'n': n,
+                        'method': method
+                    })
             elif self.operation == 'filter':
                 self.progress.emit(50, "Applying filter...")
                 filter_type = self.kwargs['filter_type']
