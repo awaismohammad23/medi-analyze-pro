@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from src.database import get_db_connection, init_database
 from .styles import get_stylesheet, COLORS
+from .tabs import DataManagementTab
 
 
 class MainWindow(QMainWindow):
@@ -130,16 +131,8 @@ class MainWindow(QMainWindow):
     
     def _create_placeholder_tabs(self):
         """Create placeholder tabs for each module"""
-        # Tab 1: Patient Data Management
-        tab1 = self._create_placeholder_tab(
-            "Patient Data Management",
-            "This tab will allow you to:\n"
-            "• Load CSV files with health data\n"
-            "• View and manage patient records\n"
-            "• Insert, update, and delete data\n"
-            "• Connect to database\n\n"
-            "Implementation: Phase 9"
-        )
+        # Tab 1: Patient Data Management (Phase 9 - Real Implementation)
+        tab1 = DataManagementTab()
         self.tab_widget.addTab(tab1, "Data Management")
         
         # Tab 2: Health Data Analysis
