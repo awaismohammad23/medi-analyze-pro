@@ -55,6 +55,8 @@ class TimeSeriesPlotter:
         """
         fig, ax = plt.subplots(figsize=self.figsize, dpi=self.dpi)
         
+        time_data = None  # Initialize to avoid UnboundLocalError
+        
         # Handle DataFrame input
         if isinstance(data, pd.DataFrame):
             if time_column is None:
@@ -62,6 +64,7 @@ class TimeSeriesPlotter:
                 datetime_cols = data.select_dtypes(include=['datetime64']).columns
                 if len(datetime_cols) > 0:
                     time_column = datetime_cols[0]
+                    time_data = pd.to_datetime(data[time_column])
                 else:
                     # Use index if no datetime column
                     time_data = data.index
@@ -100,14 +103,22 @@ class TimeSeriesPlotter:
                     if len(metric_data) == len(time_data):
                         ax.plot(time_data, metric_data, label=metric, linewidth=2, alpha=0.7)
         
+        else:
+            # Handle other input types - use numeric index
+            if isinstance(data, np.ndarray):
+                time_data = np.arange(len(data))
+                ax.plot(time_data, data, label='Data', linewidth=2, alpha=0.7)
+            else:
+                raise ValueError(f"Unsupported data type: {type(data)}. Expected DataFrame, dict, or numpy array.")
+        
         ax.set_xlabel('Time', fontsize=12, fontweight='bold')
         ax.set_ylabel('Value', fontsize=12, fontweight='bold')
         ax.set_title(title, fontsize=14, fontweight='bold')
         ax.legend(loc='best', framealpha=0.9)
         ax.grid(True, alpha=0.3, linestyle='--')
         
-        # Format x-axis for dates
-        if isinstance(time_data, pd.DatetimeIndex):
+        # Format x-axis for dates (only if time_data is datetime)
+        if time_data is not None and isinstance(time_data, pd.DatetimeIndex):
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
             ax.xaxis.set_major_locator(mdates.AutoDateLocator())
             plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')

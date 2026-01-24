@@ -19,7 +19,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from src.database import get_db_connection, init_database
 from .styles import get_stylesheet, COLORS
-from .tabs import DataManagementTab, HealthAnalysisTab, SpectrumAnalysisTab, ImageProcessingTab
+from .tabs import (
+    DataManagementTab, HealthAnalysisTab, SpectrumAnalysisTab,
+    ImageProcessingTab, VisualizationTab
+)
 
 
 class MainWindow(QMainWindow):
@@ -147,17 +150,8 @@ class MainWindow(QMainWindow):
         tab4 = ImageProcessingTab()
         self.tab_widget.addTab(tab4, "Image Processing")
         
-        # Tab 5: Data Visualization
-        tab5 = self._create_placeholder_tab(
-            "Data Visualization",
-            "This tab will allow you to:\n"
-            "• Create time-series plots\n"
-            "• Generate scatter plots and heatmaps\n"
-            "• Visualize FFT spectra\n"
-            "• Compare medical images\n"
-            "• Export visualizations\n\n"
-            "Implementation: Phase 13"
-        )
+        # Tab 5: Data Visualization (Phase 13 - Real Implementation)
+        tab5 = VisualizationTab()
         self.tab_widget.addTab(tab5, "Visualization")
     
     def _create_placeholder_tab(self, title: str, description: str) -> QWidget:

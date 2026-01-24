@@ -7,5 +7,12 @@ from .data_management_tab import DataManagementTab
 from .health_analysis_tab import HealthAnalysisTab
 from .spectrum_analysis_tab import SpectrumAnalysisTab
 from .image_processing_tab import ImageProcessingTab
+from .visualization_tab import VisualizationTab
 
-__all__ = ['DataManagementTab', 'HealthAnalysisTab', 'SpectrumAnalysisTab', 'ImageProcessingTab']
+__all__ = [
+    'DataManagementTab',
+    'HealthAnalysisTab',
+    'SpectrumAnalysisTab',
+    'ImageProcessingTab',
+    'VisualizationTab'
+]

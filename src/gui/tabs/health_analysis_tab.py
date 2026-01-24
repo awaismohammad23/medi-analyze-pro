@@ -168,14 +168,19 @@ class HealthAnalysisTab(QWidget):
         # Action buttons
         action_layout = QHBoxLayout()
         action_layout.setSpacing(10)
-        self.reset_btn = QPushButton("🔄 Reset All")
+        self.reset_btn = QPushButton("Reset All")
         self.reset_btn.clicked.connect(self._reset_all)
         self.reset_btn.setMinimumHeight(38)
+        self.reset_btn.setToolTip("Clear all filters, correlations, and visualizations and reset to default state")
         self.reset_btn.setStyleSheet(
             f"QPushButton {{"
             f"background-color: {COLORS['secondary']}; "
             f"color: {COLORS['primary']}; "
             f"border: 1px solid {COLORS['primary']};"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 8px 16px;"
             f"}}"
             f"QPushButton:hover {{"
             f"background-color: {COLORS['primary']}; "
@@ -184,9 +189,29 @@ class HealthAnalysisTab(QWidget):
         )
         action_layout.addWidget(self.reset_btn)
         
-        self.apply_btn = QPushButton("▶️ Apply Analysis")
+        self.apply_btn = QPushButton("Apply Analysis")
         self.apply_btn.clicked.connect(self._apply_analysis)
         self.apply_btn.setMinimumHeight(38)
+        self.apply_btn.setToolTip("Apply the selected filter to the data and update statistics")
+        self.apply_btn.setStyleSheet(
+            f"QPushButton {{"
+            f"background-color: {COLORS['primary']}; "
+            f"color: {COLORS['button_text']}; "
+            f"border: none;"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 8px 16px;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"background-color: {COLORS['primary_dark']};"
+            f"}}"
+            f"QPushButton:disabled {{"
+            f"background-color: {COLORS['border']}; "
+            f"color: {COLORS['text_secondary']}; "
+            f"opacity: 0.5;"
+            f"}}"
+        )
         action_layout.addWidget(self.apply_btn)
         
         left_layout.addLayout(action_layout)
@@ -237,9 +262,24 @@ class HealthAnalysisTab(QWidget):
         layout.setSpacing(12)
         
         # Load data button
-        self.load_data_btn = QPushButton("📊 Load Health Metrics")
+        self.load_data_btn = QPushButton("Load Health Metrics from Database")
         self.load_data_btn.clicked.connect(self._load_health_metrics)
         self.load_data_btn.setMinimumHeight(40)
+        self.load_data_btn.setToolTip("Load health metrics data from the database for analysis")
+        self.load_data_btn.setStyleSheet(
+            f"QPushButton {{"
+            f"background-color: {COLORS['primary']}; "
+            f"color: {COLORS['button_text']}; "
+            f"border: none;"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 10px 16px;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"background-color: {COLORS['primary_dark']};"
+            f"}}"
+        )
         layout.addWidget(self.load_data_btn)
         
         # Patient selection with proper spacing
@@ -426,10 +466,30 @@ class HealthAnalysisTab(QWidget):
         layout.addWidget(self.filter_params_widget)
         
         # Apply filter button
-        self.apply_filter_btn = QPushButton("🔍 Apply Filter")
+        self.apply_filter_btn = QPushButton("Apply Filter")
         self.apply_filter_btn.clicked.connect(self._apply_filter)
         self.apply_filter_btn.setEnabled(False)
         self.apply_filter_btn.setMinimumHeight(38)
+        self.apply_filter_btn.setToolTip("Apply the selected filter type to the chosen metric")
+        self.apply_filter_btn.setStyleSheet(
+            f"QPushButton {{"
+            f"background-color: {COLORS['primary']}; "
+            f"color: {COLORS['button_text']}; "
+            f"border: none;"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 8px 16px;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"background-color: {COLORS['primary_dark']};"
+            f"}}"
+            f"QPushButton:disabled {{"
+            f"background-color: {COLORS['border']}; "
+            f"color: {COLORS['text_secondary']}; "
+            f"opacity: 0.5;"
+            f"}}"
+        )
         layout.addWidget(self.apply_filter_btn)
         
         group.setLayout(layout)
@@ -554,10 +614,30 @@ class HealthAnalysisTab(QWidget):
         layout.addLayout(method_layout)
         
         # Compute button
-        self.compute_corr_btn = QPushButton("📈 Compute Correlation")
+        self.compute_corr_btn = QPushButton("Compute Correlation")
         self.compute_corr_btn.clicked.connect(self._compute_correlation)
         self.compute_corr_btn.setEnabled(False)
         self.compute_corr_btn.setMinimumHeight(38)
+        self.compute_corr_btn.setToolTip("Calculate correlation between the two selected metrics using the chosen method (Pearson or Spearman)")
+        self.compute_corr_btn.setStyleSheet(
+            f"QPushButton {{"
+            f"background-color: {COLORS['primary']}; "
+            f"color: {COLORS['button_text']}; "
+            f"border: none;"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 8px 16px;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"background-color: {COLORS['primary_dark']};"
+            f"}}"
+            f"QPushButton:disabled {{"
+            f"background-color: {COLORS['border']}; "
+            f"color: {COLORS['text_secondary']}; "
+            f"opacity: 0.5;"
+            f"}}"
+        )
         layout.addWidget(self.compute_corr_btn)
         
         # Results display
@@ -631,10 +711,30 @@ class HealthAnalysisTab(QWidget):
         layout.addLayout(viz_type_layout)
         
         # Generate button
-        self.generate_viz_btn = QPushButton("📊 Generate Visualization")
+        self.generate_viz_btn = QPushButton("Generate Time-Series Visualization")
         self.generate_viz_btn.clicked.connect(self._generate_visualization)
         self.generate_viz_btn.setEnabled(False)
         self.generate_viz_btn.setMinimumHeight(38)
+        self.generate_viz_btn.setToolTip("Generate the selected time-series visualization type (Time Series Plot, Trend Analysis, Anomaly Detection, etc.)")
+        self.generate_viz_btn.setStyleSheet(
+            f"QPushButton {{"
+            f"background-color: {COLORS['primary']}; "
+            f"color: {COLORS['button_text']}; "
+            f"border: none;"
+            f"border-radius: 8px;"
+            f"font-weight: 600;"
+            f"font-size: 11pt;"
+            f"padding: 8px 16px;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"background-color: {COLORS['primary_dark']};"
+            f"}}"
+            f"QPushButton:disabled {{"
+            f"background-color: {COLORS['border']}; "
+            f"color: {COLORS['text_secondary']}; "
+            f"opacity: 0.5;"
+            f"}}"
+        )
         layout.addWidget(self.generate_viz_btn)
         
         group.setLayout(layout)
@@ -924,8 +1024,20 @@ class HealthAnalysisTab(QWidget):
     
     def _compute_correlation(self):
         """Compute correlation between two metrics"""
-        metric1 = self.corr_metric1_combo.currentText()
-        metric2 = self.corr_metric2_combo.currentText()
+        # Check if combo boxes exist and are valid
+        if not hasattr(self, 'corr_metric1_combo') or self.corr_metric1_combo is None or \
+           not hasattr(self, 'corr_metric2_combo') or self.corr_metric2_combo is None or \
+           not hasattr(self, 'corr_method_combo') or self.corr_method_combo is None:
+            QMessageBox.warning(self, "Error", "Correlation controls are not available. Please try again.")
+            return
+        
+        try:
+            metric1 = self.corr_metric1_combo.currentText()
+            metric2 = self.corr_metric2_combo.currentText()
+            method = self.corr_method_combo.currentText().lower()
+        except RuntimeError:
+            QMessageBox.warning(self, "Error", "Controls are not available. Please try again.")
+            return
         
         if metric1 == "Select metric..." or metric2 == "Select metric...":
             QMessageBox.warning(self, "Invalid Selection", "Please select both metrics.")
@@ -939,20 +1051,106 @@ class HealthAnalysisTab(QWidget):
             QMessageBox.warning(self, "No Data", "Please load data first.")
             return
         
+        # Check if metrics exist in the data
+        if metric1 not in self.filtered_data.columns:
+            QMessageBox.warning(
+                self,
+                "Invalid Metric",
+                f"Metric '{metric1}' not found in the data.\n\n"
+                f"Available metrics: {', '.join(self.filtered_data.columns.tolist()[:10])}"
+            )
+            return
+        
+        if metric2 not in self.filtered_data.columns:
+            QMessageBox.warning(
+                self,
+                "Invalid Metric",
+                f"Metric '{metric2}' not found in the data.\n\n"
+                f"Available metrics: {', '.join(self.filtered_data.columns.tolist()[:10])}"
+            )
+            return
+        
         try:
             self.compute_corr_btn.setEnabled(False)
             self._update_status("Computing correlation...", "info")
             
+            # Extract data and handle NaN values
             x = self.filtered_data[metric1].values
             y = self.filtered_data[metric2].values
             
-            method = self.corr_method_combo.currentText().lower()
+            # Convert to numeric, handling any non-numeric values
+            try:
+                x = pd.to_numeric(x, errors='coerce')
+                y = pd.to_numeric(y, errors='coerce')
+            except Exception as e:
+                QMessageBox.critical(
+                    self,
+                    "Data Type Error",
+                    f"Could not convert metrics to numeric values:\n{str(e)}\n\n"
+                    f"Please ensure both metrics contain numeric data."
+                )
+                return
+            
+            # Check for valid data after conversion
+            valid_mask = ~(pd.isna(x) | pd.isna(y))
+            valid_count = np.sum(valid_mask)
+            
+            if valid_count < 2:
+                QMessageBox.warning(
+                    self,
+                    "Insufficient Data",
+                    f"Not enough valid data points for correlation.\n\n"
+                    f"Valid pairs: {valid_count} (need at least 2)\n"
+                    f"Total data points: {len(x)}\n"
+                    f"NaN values in {metric1}: {np.sum(pd.isna(x))}\n"
+                    f"NaN values in {metric2}: {np.sum(pd.isna(y))}"
+                )
+                return
+            
+            # Check for constant values (zero variance)
+            x_clean = x[valid_mask]
+            y_clean = y[valid_mask]
+            
+            if np.std(x_clean) == 0:
+                QMessageBox.warning(
+                    self,
+                    "Invalid Data",
+                    f"Metric '{metric1}' has zero variance (all values are the same).\n\n"
+                    f"Cannot compute correlation with a constant variable."
+                )
+                return
+            
+            if np.std(y_clean) == 0:
+                QMessageBox.warning(
+                    self,
+                    "Invalid Data",
+                    f"Metric '{metric2}' has zero variance (all values are the same).\n\n"
+                    f"Cannot compute correlation with a constant variable."
+                )
+                return
+            
             analyzer = CorrelationAnalyzer()
             
             if method == 'pearson':
-                corr, p_value, n = analyzer.compute_pearson_correlation(x, y)
+                corr, p_value, n = analyzer.compute_pearson_correlation(x_clean, y_clean)
+            elif method == 'spearman':
+                corr, p_value, n = analyzer.compute_spearman_correlation(x_clean, y_clean)
             else:
-                corr, p_value, n = analyzer.compute_spearman_correlation(x, y)
+                QMessageBox.warning(self, "Invalid Method", f"Unknown correlation method: {method}")
+                return
+            
+            # Validate results
+            if np.isnan(corr) or np.isnan(p_value):
+                QMessageBox.warning(
+                    self,
+                    "Computation Error",
+                    "Correlation computation resulted in invalid values (NaN).\n\n"
+                    "This may occur if:\n"
+                    "- Data has insufficient variation\n"
+                    "- All data points are identical\n"
+                    "- Numerical precision issues"
+                )
+                return
             
             # Display results
             result_text = f"""
@@ -963,7 +1161,7 @@ Metric 2: {metric2}
 {'=' * 40}
 Correlation Coefficient: {corr:.4f}
 P-value: {p_value:.6f}
-Sample Size: {n}
+Sample Size: {n} (out of {len(x)} total)
 
 Interpretation:
 {self._interpret_correlation(corr)}
@@ -973,8 +1171,11 @@ Interpretation:
             self._update_status(f"Correlation computed: {corr:.4f}", "success")
             
             # Generate scatter plot
-            self._plot_correlation(metric1, metric2, x, y, corr)
+            self._plot_correlation(metric1, metric2, x_clean, y_clean, corr)
             
+        except ValueError as e:
+            QMessageBox.warning(self, "Data Validation Error", f"Invalid data for correlation:\n{str(e)}")
+            self._update_status(f"Error: {str(e)}", "error")
         except Exception as e:
             QMessageBox.critical(self, "Correlation Error", f"Failed to compute correlation:\n{str(e)}")
             self._update_status(f"Error: {str(e)}", "error")
