@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from src.database import get_db_connection, init_database
 from .styles import get_stylesheet, COLORS
-from .tabs import DataManagementTab, HealthAnalysisTab, SpectrumAnalysisTab
+from .tabs import DataManagementTab, HealthAnalysisTab, SpectrumAnalysisTab, ImageProcessingTab
 
 
 class MainWindow(QMainWindow):
@@ -142,18 +142,9 @@ class MainWindow(QMainWindow):
         # Tab 3: Spectrum Analysis (Phase 11 - Real Implementation)
         tab3 = SpectrumAnalysisTab()
         self.tab_widget.addTab(tab3, "Spectrum Analysis")
-        self.tab_widget.addTab(tab3, "Spectrum Analysis")
         
-        # Tab 4: Image Processing
-        tab4 = self._create_placeholder_tab(
-            "Medical Image Processing",
-            "This tab will allow you to:\n"
-            "• Upload medical images (X-ray, MRI, CT)\n"
-            "• Apply image processing operations\n"
-            "• View before/after comparisons\n"
-            "• Extract image metadata\n\n"
-            "Implementation: Phase 12"
-        )
+        # Tab 4: Image Processing (Phase 12 - Real Implementation)
+        tab4 = ImageProcessingTab()
         self.tab_widget.addTab(tab4, "Image Processing")
         
         # Tab 5: Data Visualization
